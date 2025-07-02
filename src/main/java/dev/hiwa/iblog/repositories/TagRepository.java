@@ -1,0 +1,11 @@
+package dev.hiwa.iblog.repositories;
+
+import dev.hiwa.iblog.domain.entities.Category;
+import dev.hiwa.iblog.domain.entities.Tag;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface TagRepository extends JpaRepository<Tag, UUID> {}
