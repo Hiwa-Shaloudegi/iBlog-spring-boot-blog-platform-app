@@ -43,6 +43,10 @@ public class Post {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
