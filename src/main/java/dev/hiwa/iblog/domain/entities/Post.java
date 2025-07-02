@@ -11,7 +11,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -47,6 +49,14 @@ public class Post {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToMany
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
+    )
+    private Set<Tag> tags = new HashSet<>();
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -59,12 +69,13 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(id, post.id) && Objects.equals(title,
-                                                             post.title
-        ) && Objects.equals(content, post.content) && status == post.status && Objects.equals(
-                readingTime,
-                post.readingTime
-        ) && Objects.equals(createdAt, post.createdAt) && Objects.equals(updatedAt, post.updatedAt);
+        return Objects.equals(id, post.id) && Objects.equals(title, post.title) && Objects.equals(
+                content,
+                post.content
+        ) && status == post.status && Objects.equals(readingTime, post.readingTime) && Objects.equals(
+                createdAt,
+                post.createdAt
+        ) && Objects.equals(updatedAt, post.updatedAt);
     }
 
     @Override
