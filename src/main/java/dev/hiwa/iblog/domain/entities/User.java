@@ -9,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,14 +35,19 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-//    @PrePersist
-//    void onCreate() {
-//        this.createdAt = LocalDateTime.now();
-//    }
+
+    //    @PrePersist
+    //    void onCreate() {
+    //        this.createdAt = LocalDateTime.now();
+    //    }
+
 
     @Override
     public boolean equals(Object o) {
