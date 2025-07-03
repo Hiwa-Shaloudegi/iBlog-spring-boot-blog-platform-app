@@ -65,4 +65,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
     }
+
+    @ExceptionHandler(ResourceConstraintViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleResourceConstraintViolationException(
+            ResourceAlreadyExistsException ex
+    ) {
+        ApiErrorResponse apiErrorResponse =
+                new ApiErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
+    }
 }

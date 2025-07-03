@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,5 +35,14 @@ public class CategoryController {
         var uri = uriBuilder.path("/api/v1/categories/{id}").buildAndExpand(categoryDto.getId()).toUri();
 
         return ResponseEntity.created(uri).body(categoryDto);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable("id") UUID id) {
+        categoryService.deleteCategory(id);
+
+        return ResponseEntity.noContent().build();
+
     }
 }
