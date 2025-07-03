@@ -18,6 +18,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "tags")
 public class Tag {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

@@ -18,16 +18,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
-        log.error(
-                "An unexpected error occurred: {}",
-                ex.getMessage(),
-                ex
-        );
+        log.error("An unexpected error occurred: {}", ex.getMessage(), ex);
 
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage()
-        );
+        ApiErrorResponse apiErrorResponse =
+                new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
 
         return ResponseEntity.internalServerError().body(apiErrorResponse);
     }
@@ -38,10 +32,10 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex
     ) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(
-                error.getField(),
-                error.getDefaultMessage()
-        ));
+        ex
+                .getBindingResult()
+                .getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
 
         ApiValidationErrorResponse apiValidationErrorResponse = ApiValidationErrorResponse
@@ -56,10 +50,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage()
-        );
+        ApiErrorResponse apiErrorResponse =
+                new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
@@ -68,10 +60,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleResourceAlreadyExistsException(
             ResourceAlreadyExistsException ex
     ) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
-                HttpStatus.CONFLICT.value(),
-                ex.getMessage()
-        );
+        ApiErrorResponse apiErrorResponse =
+                new ApiErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
     }
