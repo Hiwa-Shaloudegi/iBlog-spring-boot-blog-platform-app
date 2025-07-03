@@ -1,12 +1,13 @@
 package dev.hiwa.iblog.controllers;
 
-import dev.hiwa.iblog.domain.dto.CategoryDto;
+import dev.hiwa.iblog.domain.dto.request.CreateCategoryRequest;
+import dev.hiwa.iblog.domain.dto.response.CategoryDto;
 import dev.hiwa.iblog.services.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -22,5 +23,16 @@ public class CategoryController {
         List<CategoryDto> categories = categoryService.getAllCategoriesWithPosts();
 
         return ResponseEntity.ok(categories);
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoryDto> createCategory(
+            @Valid @RequestBody CreateCategoryRequest request, UriComponentsBuilder uriBuilder
+    ) {
+        CategoryDto categoryDto = categoryService.createCategory(request);
+
+        var uri = uriBuilder.path("/api/v1/categories/{id}").buildAndExpand(categoryDto.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(categoryDto);
     }
 }

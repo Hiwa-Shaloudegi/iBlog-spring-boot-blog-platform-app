@@ -1,6 +1,7 @@
 package dev.hiwa.iblog.mappers;
 
-import dev.hiwa.iblog.domain.dto.CategoryDto;
+import dev.hiwa.iblog.domain.dto.request.CreateCategoryRequest;
+import dev.hiwa.iblog.domain.dto.response.CategoryDto;
 import dev.hiwa.iblog.domain.entities.Category;
 import dev.hiwa.iblog.domain.entities.Post;
 import dev.hiwa.iblog.domain.enums.PostStatus;
@@ -19,9 +20,13 @@ public interface CategoryMapper {
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "getPostCount")
     CategoryDto toDto(Category category);
 
+    Category toEntity(CreateCategoryRequest request);
+
+
     @Named("getPostCount")
     default long getPostCount(List<Post> posts) {
         if (posts == null) return 0;
         return posts.stream().filter(post -> post.getStatus().equals(PostStatus.PUBLISHED)).count();
     }
+
 }

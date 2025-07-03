@@ -21,6 +21,9 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
     //    List<Category> findAlWithPosts();
 
     //    @Query("SELECT DISTINCT c FROM Category c LEFT JOIN FETCH c.posts p WHERE p.status =
-        //    'published'")
+    //    'published'")
     //    List<Category> findAlWithPublishedPosts();
+
+    boolean existsByNameIgnoreCase(String name);
+
 }
