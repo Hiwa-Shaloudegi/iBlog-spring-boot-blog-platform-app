@@ -1,7 +1,9 @@
 package dev.hiwa.iblog.controllers;
 
 import dev.hiwa.iblog.domain.dto.request.LoginRequest;
+import dev.hiwa.iblog.domain.dto.request.RegisterRequest;
 import dev.hiwa.iblog.domain.dto.response.JwtResponse;
+import dev.hiwa.iblog.domain.dto.response.UserDto;
 import dev.hiwa.iblog.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +27,14 @@ public class AuthController {
         JwtResponse jwtResponse = authService.login(request);
 
         return ResponseEntity.ok(jwtResponse);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(
+            @Valid @RequestBody RegisterRequest request
+    ) {
+        UserDto userDto = authService.register(request);
+
+        return ResponseEntity.ok(userDto);
     }
 }
