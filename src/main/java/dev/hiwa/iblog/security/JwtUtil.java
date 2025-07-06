@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtUtil {
@@ -41,8 +42,8 @@ public class JwtUtil {
         return email != null ? email.toString() : null;
     }
 
-    public Long extractUserId(String token) {
-        return Long.valueOf(_extractClaims(token).getSubject());
+    public UUID extractUserId(String token) {
+        return UUID.fromString(_extractClaims(token).getSubject());
     }
 
     public String extractName(String token) {

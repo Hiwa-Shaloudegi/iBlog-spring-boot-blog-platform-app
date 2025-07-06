@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/v3/api-docs/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/posts/drafts")
+                        .authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/posts/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/categories/**")
@@ -50,6 +52,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register")
                         .permitAll()
+
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

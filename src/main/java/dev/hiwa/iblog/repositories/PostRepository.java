@@ -22,11 +22,16 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             @Param("status") PostStatus postStatus, @Param("tagId") UUID tagId
     );
 
-    @Query("SELECT DISTINCT p FROM Post p JOIN p.tags t WHERE p.status = :status AND p.category.id = " +
-            ":categoryId AND t.id = :tagId")
+    @Query(
+            "SELECT DISTINCT p FROM Post p JOIN p.tags t WHERE p.status = :status AND p.category.id = "
+                    + ":categoryId AND t.id = :tagId"
+    )
     List<Post> findAllByStatusAndCategoryIdAndTagId(
             @Param("status") PostStatus status,
             @Param("categoryId") UUID categoryId,
             @Param("tagId") UUID tagId
     );
+
+    List<Post> findAllByStatusAndAuthor_Id(PostStatus status, UUID authorId);
+
 }
