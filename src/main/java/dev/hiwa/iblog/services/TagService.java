@@ -3,6 +3,8 @@ package dev.hiwa.iblog.services;
 import dev.hiwa.iblog.domain.dto.request.CreateTagsRequest;
 import dev.hiwa.iblog.domain.dto.response.TagResponse;
 import dev.hiwa.iblog.domain.entities.Tag;
+import dev.hiwa.iblog.exceptions.ResourceConstraintViolationException;
+import dev.hiwa.iblog.exceptions.ResourceNotFoundException;
 import dev.hiwa.iblog.mappers.TagMapper;
 import dev.hiwa.iblog.repositories.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -50,5 +49,17 @@ public class TagService {
         }
         savedTags.addAll(existingTags);
         return savedTags.stream().map(tagMapper::toTagResponse).toList();
+    }
+
+    public void deleteTagById(UUID id) {
+        Tag tag = tagRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", id.toString()));
+
+
+        if (!tag.getPosts().isEmpty()) throw new ResourceConstraintViolationException(
+                "Tag cannot be deleted because it has associated posts.");
+
+        tagRepository.deleteById(id);
     }
 }

@@ -44,7 +44,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/tags")
                         .permitAll()
-
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/tags/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register")

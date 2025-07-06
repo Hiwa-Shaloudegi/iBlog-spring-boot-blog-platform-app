@@ -47,6 +47,7 @@ public class CategoryService {
         return categoryMapper.toDto(savedCategory);
     }
 
+    @Transactional
     public void deleteCategory(UUID id) {
         Category category = categoryRepository
                 .findById(id)
