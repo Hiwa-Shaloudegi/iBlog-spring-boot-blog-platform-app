@@ -15,12 +15,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryMapper {
 
-    Category fromDto(CategoryDto categoryDto);
 
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "getPostCount")
     CategoryDto toDto(Category category);
 
     Category toEntity(CreateCategoryRequest request);
+
+    Category toEntity(CategoryDto request);
 
 
     @Named("getPostCount")

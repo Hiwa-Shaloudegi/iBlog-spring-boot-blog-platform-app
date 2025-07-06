@@ -14,8 +14,12 @@ import java.util.Set;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagMapper {
 
+    @Mapping(target = "posts", ignore = true)
+    Tag toEntity(TagDto tagDto);
+
+
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "getPostCount")
-    TagDto toTagDto(Tag tag);
+    TagDto toDto(Tag tag);
 
     @Named("getPostCount")
     default long getPostCount(Set<Post> posts) {

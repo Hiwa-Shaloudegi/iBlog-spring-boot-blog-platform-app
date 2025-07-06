@@ -1,10 +1,13 @@
 package dev.hiwa.iblog.services;
 
+import dev.hiwa.iblog.domain.dto.request.CreatePostRequest;
 import dev.hiwa.iblog.domain.dto.response.PostDto;
 import dev.hiwa.iblog.domain.entities.Post;
 import dev.hiwa.iblog.domain.enums.PostStatus;
 import dev.hiwa.iblog.exceptions.ResourceNotFoundException;
+import dev.hiwa.iblog.mappers.CategoryMapper;
 import dev.hiwa.iblog.mappers.PostMapper;
+import dev.hiwa.iblog.mappers.TagMapper;
 import dev.hiwa.iblog.repositories.PostRepository;
 import dev.hiwa.iblog.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +17,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class PostService {
 
-    private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
     private final PostMapper postMapper;
+
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
+
     private final TagService tagService;
+    private final TagMapper tagMapper;
 
 
     @Transactional(readOnly = true)
@@ -60,5 +68,30 @@ public class PostService {
                 postRepository.findAllByStatusAndAuthor_Id(PostStatus.DRAFT, user.getId());
 
         return draftPosts.stream().map(postMapper::toDto).toList();
+    }
+
+    @Transactional
+    public PostDto createPost(CreatePostRequest request, String userEmail) {
+        var user = userRepository
+                .findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", userEmail));
+        var categoryDto = categoryService.getCategoryById(request.getCategoryId());
+        var tagDtos = tagService.getTagByIds(request.getTagIds());
+
+        var post = postMapper.toEntity(request);
+        post.setAuthor(user);
+        post.setCategory(categoryMapper.toEntity(categoryDto));
+        post.setTags(tagDtos.stream().map(tagMapper::toEntity).collect(Collectors.toSet()));
+        post.setReadingTime(calculateReadingTime(request.getContent()));
+
+        postRepository.save(post);
+
+        return postMapper.toDto(post);
+    }
+
+    private Integer calculateReadingTime(String content) {
+        int words = content.trim().split("\\s+").length;
+        int wordsPerMinute = 200;
+        return Math.max(1, words / wordsPerMinute);
     }
 }

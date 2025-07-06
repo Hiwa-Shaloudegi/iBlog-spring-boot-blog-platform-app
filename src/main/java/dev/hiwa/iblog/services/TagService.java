@@ -26,7 +26,7 @@ public class TagService {
     public List<TagDto> getAllTagsWithPosts() {
         List<Tag> tags = tagRepository.findAllWithPosts();
 
-        return tags.stream().map(tagMapper::toTagDto).toList();
+        return tags.stream().map(tagMapper::toDto).toList();
     }
 
     @Transactional
@@ -48,7 +48,7 @@ public class TagService {
             savedTags = tagRepository.saveAll(tagsToSave);
         }
         savedTags.addAll(existingTags);
-        return savedTags.stream().map(tagMapper::toTagDto).toList();
+        return savedTags.stream().map(tagMapper::toDto).toList();
     }
 
     public TagDto getTagById(UUID tagId) {
@@ -56,7 +56,16 @@ public class TagService {
                 .findById(tagId)
                 .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", tagId.toString()));
 
-        return tagMapper.toTagDto(tag);
+        return tagMapper.toDto(tag);
+    }
+    public List<TagDto> getTagByIds(Set<UUID> ids) {
+        List<Tag> tags = tagRepository
+                .findAllById(ids);
+
+        if (ids.size() != tags.size()) throw new ResourceNotFoundException("Tag", "ids", "Some tag IDs not found");
+
+
+        return tags.stream().map(tagMapper::toDto).toList();
     }
 
 
