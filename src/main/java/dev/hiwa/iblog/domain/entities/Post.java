@@ -72,11 +72,10 @@ public class Post {
         Post post = (Post) o;
         return Objects.equals(id, post.id) && Objects.equals(title,
                                                              post.title
-        ) && Objects.equals(content,
-                            post.content
-        ) && status == post.status && Objects.equals(readingTime, post.readingTime) && Objects.equals(createdAt,
-                                                                                                      post.createdAt
-        ) && Objects.equals(updatedAt, post.updatedAt);
+        ) && Objects.equals(content, post.content) && status == post.status && Objects.equals(
+                readingTime,
+                post.readingTime
+        ) && Objects.equals(createdAt, post.createdAt) && Objects.equals(updatedAt, post.updatedAt);
     }
 
     @Override

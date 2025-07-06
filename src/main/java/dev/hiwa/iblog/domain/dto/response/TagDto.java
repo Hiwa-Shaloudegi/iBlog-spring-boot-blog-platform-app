@@ -1,5 +1,6 @@
 package dev.hiwa.iblog.domain.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,11 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagResponse {
+public class TagDto {
+
     private UUID id;
     private String name;
+
+    @JsonProperty(value = "post_count")
     private Integer postCount;
 }
