@@ -41,10 +41,17 @@ public class CategoryService {
             );
         }
 
-
         Category savedCategory = categoryRepository.save(category);
 
         return categoryMapper.toDto(savedCategory);
+    }
+
+    public CategoryDto getCategoryById(UUID id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id.toString()));
+
+        return categoryMapper.toDto(category);
     }
 
     @Transactional

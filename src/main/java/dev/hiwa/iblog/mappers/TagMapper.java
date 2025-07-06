@@ -1,6 +1,6 @@
 package dev.hiwa.iblog.mappers;
 
-import dev.hiwa.iblog.domain.dto.response.TagResponse;
+import dev.hiwa.iblog.domain.dto.response.TagDto;
 import dev.hiwa.iblog.domain.entities.Post;
 import dev.hiwa.iblog.domain.entities.Tag;
 import dev.hiwa.iblog.domain.enums.PostStatus;
@@ -15,7 +15,7 @@ import java.util.Set;
 public interface TagMapper {
 
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "getPostCount")
-    TagResponse toTagResponse(Tag tag);
+    TagDto toTagDto(Tag tag);
 
     @Named("getPostCount")
     default long getPostCount(Set<Post> posts) {

@@ -1,7 +1,7 @@
 package dev.hiwa.iblog.services;
 
 import dev.hiwa.iblog.domain.dto.request.CreateTagsRequest;
-import dev.hiwa.iblog.domain.dto.response.TagResponse;
+import dev.hiwa.iblog.domain.dto.response.TagDto;
 import dev.hiwa.iblog.domain.entities.Tag;
 import dev.hiwa.iblog.exceptions.ResourceConstraintViolationException;
 import dev.hiwa.iblog.exceptions.ResourceNotFoundException;
@@ -23,14 +23,14 @@ public class TagService {
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
 
-    public List<TagResponse> getAllTagsWithPosts() {
+    public List<TagDto> getAllTagsWithPosts() {
         List<Tag> tags = tagRepository.findAllWithPosts();
 
-        return tags.stream().map(tagMapper::toTagResponse).toList();
+        return tags.stream().map(tagMapper::toTagDto).toList();
     }
 
     @Transactional
-    public List<TagResponse> createTags(CreateTagsRequest request) {
+    public List<TagDto> createTags(CreateTagsRequest request) {
         Set<Tag> existingTags = tagRepository.findAllByNameIn(request.getNames());
         Set<String> existingNames = existingTags.stream().map(Tag::getName).collect(Collectors.toSet());
 
@@ -48,8 +48,17 @@ public class TagService {
             savedTags = tagRepository.saveAll(tagsToSave);
         }
         savedTags.addAll(existingTags);
-        return savedTags.stream().map(tagMapper::toTagResponse).toList();
+        return savedTags.stream().map(tagMapper::toTagDto).toList();
     }
+
+    public TagDto getTagById(UUID tagId) {
+        Tag tag = tagRepository
+                .findById(tagId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", tagId.toString()));
+
+        return tagMapper.toTagDto(tag);
+    }
+
 
     public void deleteTagById(UUID id) {
         Tag tag = tagRepository
@@ -62,4 +71,5 @@ public class TagService {
 
         tagRepository.deleteById(id);
     }
+
 }

@@ -1,7 +1,7 @@
 package dev.hiwa.iblog.controllers;
 
 import dev.hiwa.iblog.domain.dto.request.CreateTagsRequest;
-import dev.hiwa.iblog.domain.dto.response.TagResponse;
+import dev.hiwa.iblog.domain.dto.response.TagDto;
 import dev.hiwa.iblog.services.TagService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +20,17 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping
-    public ResponseEntity<List<TagResponse>> getAllTagsWithPosts() {
-        List<TagResponse> tags = tagService.getAllTagsWithPosts();
+    public ResponseEntity<List<TagDto>> getAllTagsWithPosts() {
+        List<TagDto> tags = tagService.getAllTagsWithPosts();
 
         return ResponseEntity.ok(tags);
     }
 
     @PostMapping
-    public ResponseEntity<List<TagResponse>> createTags(
+    public ResponseEntity<List<TagDto>> createTags(
             @Valid @RequestBody CreateTagsRequest request
     ) {
-        List<TagResponse> tags = tagService.createTags(request);
+        List<TagDto> tags = tagService.createTags(request);
 
         return new ResponseEntity<>(tags, HttpStatus.CREATED);
     }
