@@ -135,4 +135,10 @@ public class PostService {
         return Math.max(1, words / wordsPerMinute);
     }
 
+    @Transactional
+    public void deletePostById(UUID id) {
+        getPostById(id);
+
+        postRepository.deleteById(id);
+    }
 }

@@ -69,12 +69,19 @@ public class PostController {
         return ResponseEntity.ok(postDto);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<PostDto> getPostById(@PathVariable("id") UUID id) {
         PostDto postDto = postService.getPostById(id);
 
         return ResponseEntity.ok(postDto);
+    }
+
+    @SecurityRequirement(name = "BearerAuth")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePostById(@PathVariable("id") UUID id) {
+        postService.deletePostById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
