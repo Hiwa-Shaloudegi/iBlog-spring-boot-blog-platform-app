@@ -39,7 +39,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostDto> getAllPublishedPosts(UUID categoryId, UUID tagId) {
-        List<Post> posts = new ArrayList<>();
+        List<Post> posts;
 
         if (categoryId != null && tagId != null) {
             posts = postRepository.findAllByStatusAndCategoryIdAndTagId(PostStatus.PUBLISHED,
