@@ -119,6 +119,16 @@ public class PostService {
         return postMapper.toDto(savedPost);
     }
 
+    @Transactional(readOnly = true)
+    public PostDto getPostById(UUID id) {
+        Post post = postRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id.toString()));
+
+        return postMapper.toDto(post);
+    }
+
+
     private Integer _calculateReadingTime(String content) {
         int words = content.trim().split("\\s+").length;
         int wordsPerMinute = 200;

@@ -8,7 +8,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(
+        componentModel = "spring",
+        uses = {CategoryMapper.class, TagMapper.class, UserMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface PostMapper {
 
     @Mapping(target = "author", source = "author")

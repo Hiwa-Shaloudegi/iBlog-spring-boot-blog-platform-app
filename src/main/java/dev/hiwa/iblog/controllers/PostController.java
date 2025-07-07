@@ -1,6 +1,7 @@
 package dev.hiwa.iblog.controllers;
 
 import dev.hiwa.iblog.domain.dto.request.CreatePostRequest;
+import dev.hiwa.iblog.domain.dto.request.UpdatePostRequest;
 import dev.hiwa.iblog.domain.dto.response.PostDto;
 import dev.hiwa.iblog.services.PostService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -55,6 +56,25 @@ public class PostController {
         PostDto postDto = postService.createPost(request, userEmail);
 
         return new ResponseEntity<>(postDto, HttpStatus.CREATED);
+    }
+
+    @SecurityRequirement(name = "BearerAuth")
+    @PutMapping("/{id}")
+    public ResponseEntity<PostDto> updatePost(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody UpdatePostRequest request
+    ){
+        PostDto postDto = postService.updatePost(id, request);
+
+        return ResponseEntity.ok(postDto);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable("id") UUID id) {
+        PostDto postDto = postService.getPostById(id);
+
+        return ResponseEntity.ok(postDto);
     }
 
 }
