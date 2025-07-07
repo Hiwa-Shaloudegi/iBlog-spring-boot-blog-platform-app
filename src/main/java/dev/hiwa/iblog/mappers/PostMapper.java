@@ -1,6 +1,7 @@
 package dev.hiwa.iblog.mappers;
 
 import dev.hiwa.iblog.domain.dto.request.CreatePostRequest;
+import dev.hiwa.iblog.domain.dto.request.UpdatePostRequest;
 import dev.hiwa.iblog.domain.dto.response.PostDto;
 import dev.hiwa.iblog.domain.entities.Post;
 import org.mapstruct.Mapper;
@@ -21,4 +22,10 @@ public interface PostMapper {
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "readingTime", ignore = true)
     Post toEntity(CreatePostRequest request);
+
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "readingTime", ignore = true)
+    Post toEntity(UpdatePostRequest request);
 }

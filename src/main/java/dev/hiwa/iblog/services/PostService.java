@@ -1,8 +1,10 @@
 package dev.hiwa.iblog.services;
 
 import dev.hiwa.iblog.domain.dto.request.CreatePostRequest;
+import dev.hiwa.iblog.domain.dto.request.UpdatePostRequest;
 import dev.hiwa.iblog.domain.dto.response.PostDto;
 import dev.hiwa.iblog.domain.entities.Post;
+import dev.hiwa.iblog.domain.entities.Tag;
 import dev.hiwa.iblog.domain.enums.PostStatus;
 import dev.hiwa.iblog.exceptions.ResourceNotFoundException;
 import dev.hiwa.iblog.mappers.CategoryMapper;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -82,16 +85,44 @@ public class PostService {
         post.setAuthor(user);
         post.setCategory(categoryMapper.toEntity(categoryDto));
         post.setTags(tagDtos.stream().map(tagMapper::toEntity).collect(Collectors.toSet()));
-        post.setReadingTime(calculateReadingTime(request.getContent()));
+        post.setReadingTime(_calculateReadingTime(request.getContent()));
 
-        postRepository.save(post);
+        var savedPost = postRepository.save(post);
 
-        return postMapper.toDto(post);
+        return postMapper.toDto(savedPost);
     }
 
-    private Integer calculateReadingTime(String content) {
+    @Transactional
+    public PostDto updatePost(UUID id, UpdatePostRequest request) {
+        var existingPost = postRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id.toString()));
+
+        existingPost.setTitle(request.getTitle());
+        existingPost.setContent(request.getContent());
+        existingPost.setStatus(request.getStatus());
+
+        existingPost.setReadingTime(_calculateReadingTime(request.getContent()));
+        if (!existingPost.getCategory().getId().equals(request.getCategoryId())) {
+            var categoryDto = categoryService.getCategoryById(request.getCategoryId());
+            existingPost.setCategory(categoryMapper.toEntity(categoryDto));
+        }
+
+        Set<UUID> existingTagIds = existingPost.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+        if (!existingTagIds.equals(request.getTagIds())) {
+            var tagDtos = tagService.getTagByIds(request.getTagIds());
+            existingPost.setTags(tagDtos.stream().map(tagMapper::toEntity).collect(Collectors.toSet()));
+        }
+
+        var savedPost = postRepository.save(existingPost);
+
+        return postMapper.toDto(savedPost);
+    }
+
+    private Integer _calculateReadingTime(String content) {
         int words = content.trim().split("\\s+").length;
         int wordsPerMinute = 200;
         return Math.max(1, words / wordsPerMinute);
     }
+
 }
