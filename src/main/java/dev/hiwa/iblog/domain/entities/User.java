@@ -57,10 +57,7 @@ public class User {
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password,
                                                                                                   user.password
-        ) && Objects.equals(name, user.name) && Objects.equals(
-                createdAt,
-                user.createdAt
-        );
+        ) && Objects.equals(name, user.name) && Objects.equals(createdAt, user.createdAt);
     }
 
     @Override

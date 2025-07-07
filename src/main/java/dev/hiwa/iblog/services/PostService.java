@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -108,7 +107,8 @@ public class PostService {
             existingPost.setCategory(categoryMapper.toEntity(categoryDto));
         }
 
-        Set<UUID> existingTagIds = existingPost.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+        Set<UUID> existingTagIds =
+                existingPost.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
         if (!existingTagIds.equals(request.getTagIds())) {
             var tagDtos = tagService.getTagByIds(request.getTagIds());
             existingPost.setTags(tagDtos.stream().map(tagMapper::toEntity).collect(Collectors.toSet()));

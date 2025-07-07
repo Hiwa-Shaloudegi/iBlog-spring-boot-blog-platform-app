@@ -49,7 +49,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostDto> createPost(
             @Valid @RequestBody CreatePostRequest request
-    ){
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
@@ -61,9 +61,8 @@ public class PostController {
     @SecurityRequirement(name = "BearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(
-            @PathVariable("id") UUID id,
-            @Valid @RequestBody UpdatePostRequest request
-    ){
+            @PathVariable("id") UUID id, @Valid @RequestBody UpdatePostRequest request
+    ) {
         PostDto postDto = postService.updatePost(id, request);
 
         return ResponseEntity.ok(postDto);

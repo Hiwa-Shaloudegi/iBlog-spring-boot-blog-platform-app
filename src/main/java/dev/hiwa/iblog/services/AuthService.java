@@ -35,7 +35,7 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
 
         String accessToken = jwtUtil.generateAccessToken(user);
-//        String refreshToken = jwtUtil.generateRefreshToken(user);
+        //        String refreshToken = jwtUtil.generateRefreshToken(user);
 
         return new JwtResponse(accessToken);
 

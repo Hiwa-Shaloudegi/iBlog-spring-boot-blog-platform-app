@@ -18,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdatePostRequest {
+
     @NotNull
     private UUID id;
 
