@@ -22,8 +22,8 @@ public interface TagMapper {
     TagDto toDto(Tag tag);
 
     @Named("getPostCount")
-    default long getPostCount(Set<Post> posts) {
-        if (posts == null) return 0;
+    default Long getPostCount(Set<Post> posts) {
+        if (posts == null) return null;
         return posts.stream().filter(post -> post.getStatus().equals(PostStatus.PUBLISHED)).count();
     }
 

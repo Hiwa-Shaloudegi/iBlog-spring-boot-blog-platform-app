@@ -18,5 +18,5 @@ public class CategoryDto {
     private String name;
 
     @JsonProperty(value = "post_count")
-    private long postCount;
+    private Long postCount;
 }

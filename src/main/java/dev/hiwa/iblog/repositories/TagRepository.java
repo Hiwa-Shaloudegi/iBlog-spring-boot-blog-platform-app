@@ -17,5 +17,6 @@ public interface TagRepository extends JpaRepository<Tag, UUID> {
     @Query("SELECT t FROM Tag t")
     List<Tag> findAllWithPosts();
 
+    @EntityGraph(attributePaths = "posts")
     Set<Tag> findAllByNameIn(Set<String> names);
 }

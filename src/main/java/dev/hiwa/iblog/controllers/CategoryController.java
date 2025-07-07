@@ -3,6 +3,7 @@ package dev.hiwa.iblog.controllers;
 import dev.hiwa.iblog.domain.dto.request.CreateCategoryRequest;
 import dev.hiwa.iblog.domain.dto.response.CategoryDto;
 import dev.hiwa.iblog.services.CategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PostMapping
     public ResponseEntity<CategoryDto> createCategory(
             @Valid @RequestBody CreateCategoryRequest request, UriComponentsBuilder uriBuilder
@@ -37,7 +39,7 @@ public class CategoryController {
         return ResponseEntity.created(uri).body(categoryDto);
     }
 
-
+    @SecurityRequirement(name = "BearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable("id") UUID id) {
         categoryService.deleteCategory(id);

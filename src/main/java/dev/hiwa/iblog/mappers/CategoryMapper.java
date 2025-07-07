@@ -25,8 +25,8 @@ public interface CategoryMapper {
 
 
     @Named("getPostCount")
-    default long getPostCount(List<Post> posts) {
-        if (posts == null) return 0;
+    default Long getPostCount(List<Post> posts) {
+        if (posts == null) return null;
         return posts.stream().filter(post -> post.getStatus().equals(PostStatus.PUBLISHED)).count();
     }
 

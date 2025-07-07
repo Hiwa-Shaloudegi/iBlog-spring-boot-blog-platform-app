@@ -18,5 +18,5 @@ public class TagDto {
     private String name;
 
     @JsonProperty(value = "post_count")
-    private Integer postCount;
+    private Long postCount;
 }

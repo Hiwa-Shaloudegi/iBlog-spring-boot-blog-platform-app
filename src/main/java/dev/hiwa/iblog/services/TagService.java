@@ -58,12 +58,13 @@ public class TagService {
 
         return tagMapper.toDto(tag);
     }
+
+    @Transactional
     public List<TagDto> getTagByIds(Set<UUID> ids) {
-        List<Tag> tags = tagRepository
-                .findAllById(ids);
+        List<Tag> tags = tagRepository.findAllById(ids);
 
-        if (ids.size() != tags.size()) throw new ResourceNotFoundException("Tag", "ids", "Some tag IDs not found");
-
+        if (ids.size() != tags.size())
+            throw new ResourceNotFoundException("Tag", "ids", "Some tag IDs not found");
 
         return tags.stream().map(tagMapper::toDto).toList();
     }
