@@ -2,7 +2,7 @@
 
 A lightweight **Blog Platform REST API** built with **Spring Boot** and **Spring Security**.  
 It supports CRUD operations on **Posts**, **Categories**, and **Tags** — all exposed via **Swagger UI**.
-> 📌 **Note**: This project is based on a task brief from [Devtiro](https://www.youtube.com/@devtiro). I've implemented my own version with some changes and improvements.
+> 📌 **Note**: This project is based on a solution originally developed by [Devtiro](https://www.youtube.com/@devtiro). I've implemented my own version with some changes and improvements.
 
 ## 🚀 Features
 
